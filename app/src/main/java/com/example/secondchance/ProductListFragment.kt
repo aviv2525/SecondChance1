@@ -1,5 +1,6 @@
 package com.example.secondchance
 
+import Product
 import ProductAdapter
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -41,8 +42,12 @@ class ProductListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         productAdapter = ProductAdapter(productList) { selectedProduct ->
-            findNavController().navigate(R.id.action_productListFragment_to_productDetailFragment)
+            val bundle = Bundle().apply {
+                putParcelable("product", selectedProduct)
+            }
+            findNavController().navigate(R.id.action_productListFragment_to_productDetailFragment, bundle)
         }
+
 
         binding.rvProducts.apply {
             adapter = productAdapter

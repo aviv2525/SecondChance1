@@ -2,8 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
-
-    //id("kotlin-kept")
+    id("kotlin-parcelize")
+//id("kotlin-kept")
 }
 
 android {
@@ -13,7 +13,7 @@ android {
     buildFeatures{
         viewBinding = true
     }
-     defaultConfig {
+    defaultConfig {
         applicationId = "com.example.secondchance"
         minSdk = 24
         targetSdk = 35
