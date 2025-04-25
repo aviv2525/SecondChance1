@@ -24,10 +24,10 @@ class ProductListFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val productList = mutableListOf(
-        Product(" מוצר לדוגמה", "₪99", R.drawable.nate),
-        Product("ביצים גדולות", "₪99", R.drawable.ic_launcher_background),
-        Product("כוס קרמית", "₪29", R.drawable.ic_launcher_foreground),
-        Product("קומקום חשמלי", "₪199", R.drawable.ic_launcher_background)
+        Product(" מוצר לדוגמה", "₪99","" ,R.drawable.nate),
+        Product("ביצים גדולות", "₪99", "",R.drawable.ic_launcher_background),
+        Product("כוס קרמית", "₪29","" ,R.drawable.ic_launcher_foreground),
+        Product("קומקום חשמלי", "₪199","" ,R.drawable.ic_launcher_background)
     )
     private lateinit var productAdapter: ProductAdapter
 
@@ -71,7 +71,7 @@ class ProductListFragment : Fragment() {
             val price = bundle.getString("price") ?: return@setFragmentResultListener
             val imageRes = bundle.getInt("imageRes", R.drawable.ic_launcher_background)
 
-            val newProduct = Product(name, price, imageRes)
+            val newProduct = Product(name, price, "",imageRes)
             productList.add(newProduct)
             productAdapter.notifyItemInserted(productList.size - 1)
         }

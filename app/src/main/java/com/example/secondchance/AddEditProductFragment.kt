@@ -61,6 +61,7 @@ class AddEditProductFragment : Fragment() {
         binding.btnSaveProduct.setOnClickListener {
             val name = binding.etProductName.text.toString().trim()
             val description = binding.etProductDescription.text.toString().trim()
+
             val price = binding.Price.text.toString().trim()
 
 
@@ -75,9 +76,11 @@ class AddEditProductFragment : Fragment() {
                 return@setOnClickListener
             }
 
+            val priceWithShekel = "$price ₪"
+
             val result = Bundle().apply {
                 putString("name", binding.etProductName.text.toString())
-                putString("price", binding.Price.text.toString())
+                putString("price", priceWithShekel)
                 putInt("imageRes", R.drawable.ic_launcher_background) // אפשר לשנות בהמשך
             }
 
