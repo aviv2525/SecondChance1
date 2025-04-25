@@ -46,7 +46,6 @@ class ProductDetailFragment : Fragment() {
 
             Glide.with(requireContext())
                 .load(it.imageRes)
-                .override(200, 200)
                 .centerCrop()
                 .into(binding.ivProductImage)
         }
