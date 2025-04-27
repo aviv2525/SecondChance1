@@ -1,6 +1,5 @@
 package com.example.secondchance
 
-import Product
 import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -18,6 +17,7 @@ class ProductDetailFragment : Fragment() {
 
     private var _binding : FragmentProductDetailBinding? = null
     private val binding get() = _binding!!
+
     private var isImageFullScreen = false
 
     override fun onCreateView(
@@ -30,8 +30,48 @@ class ProductDetailFragment : Fragment() {
         binding.btnBack.setOnClickListener {
             findNavController().navigateUp()
         }
+        val product = arguments?.getParcelable<Product>("product")
+
+
+        product?.let {
+            binding.tvProductName.text = it.name
+            binding.tvProductPrice.text = it.price
+
+            Glide.with(requireContext())
+                .load(it.imageRes)
+                .centerCrop()
+                .into(binding.ivProductImage)
+        }
+
+        binding.ivProductImage.setOnClickListener {
+            showImageFullScreen(product?.imageRes)
+        }
+
         return binding.root
     }
+    private fun showImageFullScreen(imageUrl: Int?) {
+        imageUrl ?: return
+
+        val dialog = Dialog(requireContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen)
+        dialog.window?.attributes?.windowAnimations = android.R.style.Animation_Dialog
+
+        dialog.setContentView(R.layout.dialog_fullscreen_image)
+
+        val imageView = dialog.findViewById<ImageView>(R.id.fullscreenImageView)
+
+        Glide.with(requireContext())
+            .load(imageUrl)
+            .into(imageView)
+
+        imageView.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -53,6 +93,9 @@ class ProductDetailFragment : Fragment() {
         binding.btnBack.setOnClickListener {
             findNavController().navigateUp()
         }
+
+    }
+}
         //        binding.ivProductImage.setOnClickListener {
 //            if (!isImageFullScreen) {
 //                binding.ivProductImage.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
@@ -67,9 +110,9 @@ class ProductDetailFragment : Fragment() {
 //            isImageFullScreen = !isImageFullScreen
 //        }
 //
-        }
 
-    private fun showImageFullScreen(imageUrl: Int?) {
+
+/*    private fun showImageFullScreen(imageUrl: Int?) {
         imageUrl ?: return
 
         val dialog = Dialog(requireContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen)
@@ -89,7 +132,6 @@ class ProductDetailFragment : Fragment() {
         }
 
         dialog.show()
-    }
+    }*/
 
 
-}

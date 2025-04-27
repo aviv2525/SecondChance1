@@ -1,0 +1,53 @@
+package com.example.secondchance
+
+
+import android.app.Application
+import androidx.lifecycle.LiveData
+
+class ProductRepository (application: Application){
+    private var productsDao: ProductDao
+
+    init {
+        val db = AppDatabase.getDatabase(application)
+        productsDao = db.ProductsDau()
+    }
+
+
+    fun getProducts(): LiveData<List<Product>> = productsDao.getProduct()
+
+    fun addProduct(product: Product) {
+        productsDao.addProduct(product)
+    }
+
+    fun deleteProduct(product: Product) {
+        productsDao.deleteProduct(product)
+    }
+
+    fun getProduct(id: Int): LiveData<Product?> = productsDao.getProduct(id)
+}
+
+    /*fun getProducts() = productsDao?.getProduct()
+
+    fun addProduct(product: Product) {
+        productsDao?.addProduct(product)
+    }
+    fun deleteProduct(product: Product)
+    {
+        productsDao?.deleteProduct(product)
+    }
+    fun getProducts(id : Int) = productsDao?.getProduct(id)*/
+
+
+
+
+
+    /*   private val productDao = AppDatabase.getDatabase().productDao()
+
+       fun getAllProducts(): List<Product> {
+           return productDao.getAllProducts() // קריאה לבסיס נתונים
+       }
+
+       fun addProduct(product: Product) {
+           productDao.insertProduct(product)
+       }*/
+

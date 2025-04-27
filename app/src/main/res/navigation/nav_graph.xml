@@ -18,6 +18,9 @@
         android:id="@+id/productDetailFragment"
         android:name="com.example.secondchance.ProductDetailFragment"
         android:label="ProductDetailFragment" >
+        <argument
+            android:name="product"
+            app:argType="com.example.secondchance.Product" />
         <action
             android:id="@+id/action_productDetailFragment_to_productListFragment"
             app:destination="@id/productListFragment"

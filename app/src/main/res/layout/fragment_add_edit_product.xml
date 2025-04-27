@@ -33,8 +33,9 @@
             android:id="@+id/etProductName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="19dp"
             android:hint="@string/Pname"
-            android:layout_marginTop="19dp" />
+            android:minHeight="48dp" />
 
         <EditText
             android:id="@+id/etProductDescription"
@@ -45,14 +46,16 @@
             android:gravity="top"
             android:layout_marginTop="12dp"
             />
+
         <EditText
             android:id="@+id/Price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="19dp"
             android:hint="@string/price"
             android:inputType="numberDecimal"
-            android:layout_marginTop="19dp"
-            android:textStyle="bold"/>
+            android:minHeight="48dp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnSelectImage"

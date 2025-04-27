@@ -1,120 +1,154 @@
+
 package com.example.secondchance
 
-import Product
-import ProductAdapter
 import android.app.AlertDialog
+import android.media.Image
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.LinearLayout
-import androidx.fragment.app.setFragmentResultListener
-import androidx.navigation.findNavController
+import android.widget.ImageView
+import androidx.core.graphics.drawable.toDrawable
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.navigateUp
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.secondchance.databinding.FragmentProductListBinding
+import com.example.secondchance.ProductAdapter as ProductAdapter
 
 
-class ProductListFragment : Fragment() {
+class ProductListFragment : Fragment((R.layout.fragment_product_list)) {
 
     private var _binding: FragmentProductListBinding? = null
     private val binding get() = _binding!!
 
-    private val productList = mutableListOf(
-        Product(" מוצר לדוגמה", "₪99","" ,R.drawable.nate),
-        Product("ביצים גדולות", "₪99", "",R.drawable.ic_launcher_background),
-        Product("כוס קרמית", "₪29","" ,R.drawable.ic_launcher_foreground),
-        Product("קומקום חשמלי", "₪199","" ,R.drawable.ic_launcher_background)
-    )
+    private lateinit var productViewModel: ProductViewModel
     private lateinit var productAdapter: ProductAdapter
+    private lateinit var recyclerView: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProductListBinding.inflate(inflater, container, false)
+
+        // כאן נקבל את ה-ViewModel
+        productViewModel = ViewModelProvider(this)[ProductViewModel::class.java]
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        productAdapter = ProductAdapter(productList,
-            onItemClick =  { selectedProduct ->
-            val bundle = Bundle().apply {
-                putParcelable("product", selectedProduct)
+        recyclerView = view.findViewById(R.id.rvProductList)
+
+        productAdapter = ProductAdapter(
+            onItemClick = { product ->
+                // פעולה בלחיצה רגילה
+            },
+            onItemLongClick = { product ->
+                // פעולה בלחיצה ארוכה
             }
-            findNavController().navigate(R.id.action_productListFragment_to_productDetailFragment, bundle)
-        },
-        longClickListener = { product ->
-            // פעולה בלחיצה ארוכה (מחיקת המוצר)
-            deleteProduct(product)
-        }
         )
 
-        // הגדרת ה-Recyclerview
-        binding.rvProducts.apply {
-            adapter = productAdapter
-            layoutManager = LinearLayoutManager(requireContext())
-        }
+        // חיבור ה-RecyclerView ל-Adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = productAdapter
 
+        // הגשת נתונים ל-Adapter
+        val productList = listOf(
+            Product("Product 1", "10$", imageRes = R.id.product_image),
+            Product("Product 2", "20$", imageRes = R.id.ivProductImage)
+        )
 
-        binding.rvProducts.apply {
-            adapter = productAdapter
-            layoutManager = LinearLayoutManager(requireContext())
-        }
-        setFragmentResultListener("new_product_request") { _, bundle ->
-            val name = bundle.getString("name") ?: return@setFragmentResultListener
-            val price = bundle.getString("price") ?: return@setFragmentResultListener
-            val imageRes = bundle.getInt("imageRes", R.drawable.ic_launcher_background)
+        productAdapter.submitList(productList)
 
-            val newProduct = Product(name, price, "",imageRes)
-            productList.add(newProduct)
-            productAdapter.notifyItemInserted(productList.size - 1)
-        }
+        addDefaultProductsIfNeeded()
 
-        binding.addButton.setOnClickListener{
+        setupRecyclerView()
+        observeProducts()
+
+        binding.addButton.setOnClickListener {
             findNavController().navigate(R.id.action_productListFragment_to_addEditProductFragment)
         }
 
-
-        binding.detailButton.setOnClickListener{
-            findNavController().navigate(R.id.action_productListFragment_to_productDetailFragment)
-        }
-
-
-        binding.settingsButton.setOnClickListener{
+        binding.settingsButton.setOnClickListener {
             findNavController().navigate(R.id.action_productListFragment_to_settingsFragment)
         }
+    }
+    private fun addDefaultProductsIfNeeded() {
+        // קבל את ה-ViewModel שלך ואת ה-DAO
+        val productDao = AppDatabase.getDatabase(requireContext()).ProductsDau()
+
+        // יצירת רשימה של מוצרים דיפולטיביים
+        val defaultProducts = listOf(
+            Product("p 1", "100", imageRes = R.id.product_image),
+            Product("p 2", "150", imageRes = R.id.product_image),
+            Product("p 3", "200", imageRes = R.id.product_image)
+        )
+
+        // בדוק אם יש כבר מוצרים במסד הנתונים
+    }
+    private fun setupRecyclerView() {
+        productAdapter = ProductAdapter(
+            onItemClick = { product ->
+                // מה קורה בלחיצה רגילה - לדוגמה מעבר למסך עריכה (אתה יכול לשנות מה שתרצה)
+                // כרגע רק טסט
+                val bundle = Bundle().apply {
+                    putParcelable("product", product)
+                }
+                findNavController().navigate(R.id.action_productListFragment_to_productDetailFragment, bundle)
+
+                //findNavController().navigate(R.id.action_productListFragment_to_productDetailFragment)
 
 
+            },
+            onItemLongClick = { product ->
+                showDeleteDialog(product)
+            }
+        )
+        binding.rvProductList.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = productAdapter
+        }
     }
 
-    private fun deleteProduct(product: Product) {
-//        productList.remove(product)
-//        productAdapter.submitList(productList) // עדכון ה-RecyclerView
-        // יצירת התראה עם כפתורי אישור וביטול
+//    private fun setupRecyclerView() {
+//        productAdapter = ProductAdapter { product ->
+//            showDeleteDialog(product)
+//        }
+//        binding.rvProducts.apply {
+//            layoutManager = LinearLayoutManager(requireContext())
+//            adapter = productAdapter
+//        }
+//    }
+
+
+    private fun observeProducts() {
+        productViewModel.productList.observe(viewLifecycleOwner) { products ->
+            products?.let {
+                productAdapter.submitList(it)
+            }
+        }
+    }
+
+    private fun showDeleteDialog(product: Product) {
         val builder = AlertDialog.Builder(requireContext())
         builder.setMessage("Are you sure you want to delete this product?")
-            .setCancelable(false) // Prevent closing the dialog by tapping outside
-            .setPositiveButton("Yes") { dialog, id ->
-                // When the user clicks "Yes", delete the product
-                productList.remove(product)
-                productAdapter.submitList(productList) // Update the RecyclerView
+            .setPositiveButton("Yes") { dialog, _ ->
+                productViewModel.deleteProduct(product)
+                dialog.dismiss()
             }
-            .setNegativeButton("No") { dialog, id ->
-                dialog.dismiss() // Close the dialog without any action
+            .setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
             }
+            .create()
+            .show()
+    }
 
-        // Show the dialog
-        builder.create().show()
 
-
-
-}
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -126,94 +160,4 @@ class ProductListFragment : Fragment() {
 
 
 
-/*
-class ProductListFragment : Fragment() {
 
-    private var _binding : FragmentProductListBinding? = null
-    private val binding get() = _binding!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        _binding = FragmentProductListBinding.inflate(inflater, container, false)
-*/
-/*
-
-        binding.fab.setOnClickListener{
-            findNavController().navigate(R.id.action_productListFragment_to_addEditProductFragmen t)
-        }
-*//*
-
-
-
-        binding.addButton.setOnClickListener{
-            findNavController().navigate(R.id.action_productListFragment_to_addEditProductFragment)
-        }
-
-
-        binding.detailButton.setOnClickListener{
-            findNavController().navigate(R.id.action_productListFragment_to_productDetailFragment)
-        }
-
-
-        binding.settingsButton.setOnClickListener{
-            findNavController().navigate(R.id.action_productListFragment_to_settingsFragment)
-        }
-
-
-        return binding.root
-    }
-
-*/
-
-
-
-
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?): LinearLayout {
-//        super.onViewCreated(view, savedInstanceState)
-//        return binding.root
-//
-//    }
-/*
-val view = inflater.inflate(R.layout.fragment_product_list, container, false)
-
-// כפתור לעבור למסך הוספה
-val addButton = Button(requireContext()).apply {
-    text = "Go to Add"
-    setOnClickListener {
-        findNavController().navigate(R.id.action_productListFragment_to_addEditProductFragment)
-    }
-}
-
-val detailButton = Button(requireContext()).apply {
-    text = "Go to Detail"
-    setOnClickListener {
-        findNavController().navigate(R.id.action_productListFragment_to_productDetailFragment)
-    }
-}
-
-val settingsButton = Button(requireContext()).apply {
-    text = "Go to Settings"
-    setOnClickListener {
-        findNavController().navigate(R.id.action_productListFragment_to_settingsFragment)
-    }
-}
-
-// הוספת הכפתורים לדף
-(view as LinearLayout).apply {
-    addView(addButton)
-    addView(detailButton)
-    addView(settingsButton)
-}
-
-return view
-}*/
-/*
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
-}
-*/
