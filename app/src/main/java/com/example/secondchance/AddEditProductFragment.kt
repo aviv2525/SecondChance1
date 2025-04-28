@@ -89,13 +89,15 @@ class AddEditProductFragment : Fragment() {
 
 
             Toast.makeText(requireContext(), "המוצר נשמר בהצלחה", Toast.LENGTH_SHORT).show()
+            val product = Product(name = name, price = priceWithShekel, imageRes = R.drawable.ic_launcher_background)
+            //ProductViewModel.addProduct(product)
 
 
             binding.etProductName.text.clear()
             binding.etProductDescription.text.clear()
             binding.Price.text.clear()
             binding.ivProductImage.setImageDrawable(null)
-            binding.ivProductImage.visibility = View.GONE
+            binding.ivProductImage.visibility = View.VISIBLE
         }
 
         return binding.root

@@ -5,28 +5,41 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ProductViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository = ProductRepository(application)
+    private var repository = ProductRepository(application)
 
     private val productDao = AppDatabase.getDatabase(application).ProductsDau()
 
     //val viewModel by activityViewModels
 
     //val productList: LiveData<List<Product>> = productDao.getAllProducts().asLiveData()
-    val productList: LiveData<List<Product>> = productDao.getProduct()
+    val productList: LiveData<List<Product>> = repository.getProducts()
     //private val _productList = MutableLiveData<List<Product>>()
 
 
     fun addProduct(product: Product){
-        repository.addProduct(product)
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.addProduct(product)
+        }
     }
 
-    fun deleteProduct(product: Product){
-        repository.deleteProduct(product)
+    fun deleteProduct(product: Product) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteProduct(product)
+        }
     }
 
+    fun addDefaultProducts(products: List<Product>) {
+        for (product in products) {
+            addProduct(product)
+        }
+    }
 }
 //
 //

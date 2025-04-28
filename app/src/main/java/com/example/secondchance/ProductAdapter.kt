@@ -45,7 +45,6 @@ class ProductAdapter(
         fun bind(product: Product) {
             binding.tvProductName.text = product.name
             binding.tvProductPrice.text = product.price
-
             // שימוש ב-Glide לטעינת תמונה
             Glide.with(binding.root.context)
                 .load(product.imageRes) // יכול להיות URL או resId תלוי אצלך

@@ -24,8 +24,8 @@ data class Product(
     @IgnoredOnParcel
     @PrimaryKey(autoGenerate = true)
     var id : Int = 0
-}
 
+}
 
 
 

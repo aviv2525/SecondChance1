@@ -1,5 +1,6 @@
 
 package com.example.secondchance
+import android.util.Log
 
 import android.app.AlertDialog
 import android.media.Image
@@ -42,6 +43,7 @@ class ProductListFragment : Fragment((R.layout.fragment_product_list)) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+/*
         recyclerView = view.findViewById(R.id.rvProductList)
 
         productAdapter = ProductAdapter(
@@ -62,8 +64,9 @@ class ProductListFragment : Fragment((R.layout.fragment_product_list)) {
             Product("Product 1", "10$", imageRes = R.id.product_image),
             Product("Product 2", "20$", imageRes = R.id.ivProductImage)
         )
+*/
 
-        productAdapter.submitList(productList)
+        //productAdapter.submitList(productList)
 
         addDefaultProductsIfNeeded()
 
@@ -78,7 +81,7 @@ class ProductListFragment : Fragment((R.layout.fragment_product_list)) {
             findNavController().navigate(R.id.action_productListFragment_to_settingsFragment)
         }
     }
-    private fun addDefaultProductsIfNeeded() {
+/*    private fun addDefaultProductsIfNeeded() {
         // קבל את ה-ViewModel שלך ואת ה-DAO
         val productDao = AppDatabase.getDatabase(requireContext()).ProductsDau()
 
@@ -91,6 +94,30 @@ class ProductListFragment : Fragment((R.layout.fragment_product_list)) {
 
         // בדוק אם יש כבר מוצרים במסד הנתונים
     }
+    */
+
+    private fun addDefaultProductsIfNeeded() {
+        // השתמש ב-ViewModel במקום גישה ישירה ל-DAO
+        productViewModel.productList.observe(viewLifecycleOwner) { products ->
+            if (products.isEmpty()) {
+                // יצירת רשימה של מוצרים דיפולטיביים
+                val defaultProducts = listOf(
+                    Product("p 1", "100", imageRes = R.drawable.ic_launcher_background),
+                    Product("p 2", "150", imageRes = R.drawable.nate),
+                    Product("p 3", "200", imageRes = R.drawable.ic_product)
+                )
+
+                // הוסף את המוצרים באמצעות ViewModel
+                productViewModel.addDefaultProducts(defaultProducts)
+/*                for (product in defaultProducts) {
+                    productViewModel.addProduct(product)
+                }*/
+            }
+        }
+    }
+
+
+
     private fun setupRecyclerView() {
         productAdapter = ProductAdapter(
             onItemClick = { product ->
@@ -100,10 +127,7 @@ class ProductListFragment : Fragment((R.layout.fragment_product_list)) {
                     putParcelable("product", product)
                 }
                 findNavController().navigate(R.id.action_productListFragment_to_productDetailFragment, bundle)
-
                 //findNavController().navigate(R.id.action_productListFragment_to_productDetailFragment)
-
-
             },
             onItemLongClick = { product ->
                 showDeleteDialog(product)
@@ -112,27 +136,30 @@ class ProductListFragment : Fragment((R.layout.fragment_product_list)) {
         binding.rvProductList.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = productAdapter
+
+
         }
     }
 
-//    private fun setupRecyclerView() {
-//        productAdapter = ProductAdapter { product ->
-//            showDeleteDialog(product)
-//        }
-//        binding.rvProducts.apply {
-//            layoutManager = LinearLayoutManager(requireContext())
-//            adapter = productAdapter
-//        }
-//    }
 
 
     private fun observeProducts() {
         productViewModel.productList.observe(viewLifecycleOwner) { products ->
+            if (products.isNullOrEmpty()) {
+                Log.d("ProductListFragment", "No products found in database.")
+            } else {
+                Log.d("ProductListFragment", "Loaded ${products.size} products:")
+                products.forEach { product ->
+                    Log.d("ProductListFragment", "Product: ${product.name}, Price: ${product.price}")
+                }
+            }
+
             products?.let {
                 productAdapter.submitList(it)
             }
         }
     }
+
 
     private fun showDeleteDialog(product: Product) {
         val builder = AlertDialog.Builder(requireContext())
@@ -159,5 +186,14 @@ class ProductListFragment : Fragment((R.layout.fragment_product_list)) {
 
 
 
+//    private fun setupRecyclerView() {
+//        productAdapter = ProductAdapter { product ->
+//            showDeleteDialog(product)
+//        }
+//        binding.rvProducts.apply {
+//            layoutManager = LinearLayoutManager(requireContext())
+//            adapter = productAdapter
+//        }
+//    }
 
 
