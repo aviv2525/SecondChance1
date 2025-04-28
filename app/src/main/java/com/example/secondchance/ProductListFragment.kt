@@ -4,6 +4,7 @@ import android.util.Log
 
 import android.app.AlertDialog
 import android.media.Image
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -43,58 +44,38 @@ class ProductListFragment : Fragment((R.layout.fragment_product_list)) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-/*
-        recyclerView = view.findViewById(R.id.rvProductList)
-
-        productAdapter = ProductAdapter(
-            onItemClick = { product ->
-                // פעולה בלחיצה רגילה
-            },
-            onItemLongClick = { product ->
-                // פעולה בלחיצה ארוכה
-            }
-        )
-
-        // חיבור ה-RecyclerView ל-Adapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = productAdapter
-
-        // הגשת נתונים ל-Adapter
-        val productList = listOf(
-            Product("Product 1", "10$", imageRes = R.id.product_image),
-            Product("Product 2", "20$", imageRes = R.id.ivProductImage)
-        )
-*/
-
-        //productAdapter.submitList(productList)
-
-        addDefaultProductsIfNeeded()
 
         setupRecyclerView()
         observeProducts()
+        addDefaultProductsIfNeeded()
+
+        //setupListeners()
 
         binding.addButton.setOnClickListener {
             findNavController().navigate(R.id.action_productListFragment_to_addEditProductFragment)
         }
 
-        binding.settingsButton.setOnClickListener {
-            findNavController().navigate(R.id.action_productListFragment_to_settingsFragment)
+
+
+        parentFragmentManager.setFragmentResultListener("new_product_request", viewLifecycleOwner) { _, bundle ->
+            val name = bundle.getString("name")
+            val price = bundle.getString("price")
+            val imageUriString = bundle.getString("imageUri")
+
+            if (name != null && price != null) {
+                val newProduct = Product(
+                    name = name,
+                    price = price,
+                    imageRes = R.drawable.ic_product,
+                    imageUri = imageUriString
+                )
+                productViewModel.addProduct(newProduct)
+            }
+
         }
-    }
-/*    private fun addDefaultProductsIfNeeded() {
-        // קבל את ה-ViewModel שלך ואת ה-DAO
-        val productDao = AppDatabase.getDatabase(requireContext()).ProductsDau()
 
-        // יצירת רשימה של מוצרים דיפולטיביים
-        val defaultProducts = listOf(
-            Product("p 1", "100", imageRes = R.id.product_image),
-            Product("p 2", "150", imageRes = R.id.product_image),
-            Product("p 3", "200", imageRes = R.id.product_image)
-        )
 
-        // בדוק אם יש כבר מוצרים במסד הנתונים
     }
-    */
 
     private fun addDefaultProductsIfNeeded() {
         // השתמש ב-ViewModel במקום גישה ישירה ל-DAO
@@ -116,18 +97,13 @@ class ProductListFragment : Fragment((R.layout.fragment_product_list)) {
         }
     }
 
-
-
     private fun setupRecyclerView() {
         productAdapter = ProductAdapter(
             onItemClick = { product ->
-                // מה קורה בלחיצה רגילה - לדוגמה מעבר למסך עריכה (אתה יכול לשנות מה שתרצה)
-                // כרגע רק טסט
                 val bundle = Bundle().apply {
                     putParcelable("product", product)
                 }
                 findNavController().navigate(R.id.action_productListFragment_to_productDetailFragment, bundle)
-                //findNavController().navigate(R.id.action_productListFragment_to_productDetailFragment)
             },
             onItemLongClick = { product ->
                 showDeleteDialog(product)
@@ -141,8 +117,6 @@ class ProductListFragment : Fragment((R.layout.fragment_product_list)) {
         }
     }
 
-
-
     private fun observeProducts() {
         productViewModel.productList.observe(viewLifecycleOwner) { products ->
             if (products.isNullOrEmpty()) {
@@ -155,11 +129,10 @@ class ProductListFragment : Fragment((R.layout.fragment_product_list)) {
             }
 
             products?.let {
-                productAdapter.submitList(it)
+                productAdapter.submitList(products)
             }
         }
     }
-
 
     private fun showDeleteDialog(product: Product) {
         val builder = AlertDialog.Builder(requireContext())
@@ -174,7 +147,6 @@ class ProductListFragment : Fragment((R.layout.fragment_product_list)) {
             .create()
             .show()
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

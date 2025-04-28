@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="18dp"
     android:orientation="vertical"
     android:gravity="center"
     android:padding="16dp">
@@ -25,19 +26,7 @@
             android:layout_height="wrap_content"
             android:text="@string/go_to_add" />
 
-        <!-- כפתור עבור פרטי מוצר -->
-        <Button
-            android:id="@+id/detailButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/go_to_detail" />
 
-        <!-- כפתור עבור הגדרות -->
-        <Button
-            android:id="@+id/settingsButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/go_to_settings" />
 
         <!-- מפריד קטן -->
         <View

@@ -1,16 +1,20 @@
 package com.example.secondchance
 
 import android.app.AlertDialog
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import com.example.secondchance.databinding.FragmentAddEditProductBinding
+import java.io.File
 
 class AddEditProductFragment : Fragment() {
 
@@ -20,17 +24,33 @@ class AddEditProductFragment : Fragment() {
 
     private val galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let {
+            selectedImageUri = it
             binding.ivProductImage.setImageURI(it)
             binding.ivProductImage.visibility = View.VISIBLE
         }
     }
+    private var selectedImageUri: Uri? = null
 
 
     private val cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
         bitmap?.let {
-            binding.ivProductImage.setImageBitmap(it)
+            val uri = saveBitmapAndGetUri(it)
+            selectedImageUri = uri
+            binding.ivProductImage.setImageURI(uri)
             binding.ivProductImage.visibility = View.VISIBLE
+
         }
+    }
+    private fun saveBitmapAndGetUri(bitmap: Bitmap): Uri? {
+        val file = File(requireContext().cacheDir, "${System.currentTimeMillis()}.jpg")
+        file.outputStream().use {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
+        }
+        return FileProvider.getUriForFile(
+            requireContext(),
+            "${requireContext().packageName}.provider",
+            file
+        )
     }
 
     override fun onCreateView(
@@ -61,7 +81,6 @@ class AddEditProductFragment : Fragment() {
         binding.btnSaveProduct.setOnClickListener {
             val name = binding.etProductName.text.toString().trim()
             val description = binding.etProductDescription.text.toString().trim()
-
             val price = binding.Price.text.toString().trim()
 
 
@@ -81,7 +100,7 @@ class AddEditProductFragment : Fragment() {
             val result = Bundle().apply {
                 putString("name", binding.etProductName.text.toString())
                 putString("price", priceWithShekel)
-                putInt("imageRes", R.drawable.ic_launcher_background) // אפשר לשנות בהמשך
+                putString("imageUri", selectedImageUri?.toString()) // אפשר לשנות בהמשך
             }
 
             setFragmentResult("new_product_request", result)
@@ -89,7 +108,7 @@ class AddEditProductFragment : Fragment() {
 
 
             Toast.makeText(requireContext(), "המוצר נשמר בהצלחה", Toast.LENGTH_SHORT).show()
-            val product = Product(name = name, price = priceWithShekel, imageRes = R.drawable.ic_launcher_background)
+            //val product = Product(name = name, price = priceWithShekel, imageRes = R.drawable.ic_launcher_background)
             //ProductViewModel.addProduct(product)
 
 

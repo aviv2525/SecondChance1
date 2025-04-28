@@ -1,5 +1,6 @@
 package com.example.secondchance
 
+import android.net.Uri
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -15,11 +16,10 @@ data class Product(
     val name: String,
     @ColumnInfo("Price")
     val price: String,
-//    @ColumnInfo("Description")
-//    val description: String ,
-    @ColumnInfo("Image")
-    val imageRes: Int
-
+    @ColumnInfo(name = "ImageResId")
+    val imageRes: Int = R.drawable.ic_product, // דיפולט
+    @ColumnInfo(name = "ImageUri")
+    val imageUri: String? = null
 ) :Parcelable{
     @IgnoredOnParcel
     @PrimaryKey(autoGenerate = true)

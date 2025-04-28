@@ -14,14 +14,8 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
 
     private var repository = ProductRepository(application)
 
-    private val productDao = AppDatabase.getDatabase(application).ProductsDau()
 
-    //val viewModel by activityViewModels
-
-    //val productList: LiveData<List<Product>> = productDao.getAllProducts().asLiveData()
     val productList: LiveData<List<Product>> = repository.getProducts()
-    //private val _productList = MutableLiveData<List<Product>>()
-
 
     fun addProduct(product: Product){
         viewModelScope.launch(Dispatchers.IO) {
@@ -40,17 +34,5 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
             addProduct(product)
         }
     }
+
 }
-//
-//
-//    fun getAllProducts() {
-//        // קבלת הנתונים מה-Repository (למשל: מתוך Room)
-//        _productList.value = repository.getAllProducts()
-//    }
-//
-//    fun addProduct(product: Product) {
-//        // הוספת פריט חדש
-//        repository.addProduct(product)
-//        getAllProducts()  // לעדכן את הרשימה
-//    }
-//
