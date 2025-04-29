@@ -60,12 +60,14 @@ class ProductListFragment : Fragment((R.layout.fragment_product_list)) {
         parentFragmentManager.setFragmentResultListener("new_product_request", viewLifecycleOwner) { _, bundle ->
             val name = bundle.getString("name")
             val price = bundle.getString("price")
+            val description = bundle.getString("description") ?: ""
             val imageUriString = bundle.getString("imageUri")
 
             if (name != null && price != null) {
                 val newProduct = Product(
                     name = name,
                     price = price,
+                    description = description,
                     imageRes = R.drawable.ic_product,
                     imageUri = imageUriString
                 )
@@ -83,9 +85,9 @@ class ProductListFragment : Fragment((R.layout.fragment_product_list)) {
             if (products.isEmpty()) {
                 // יצירת רשימה של מוצרים דיפולטיביים
                 val defaultProducts = listOf(
-                    Product("p 1", "100", imageRes = R.drawable.ic_launcher_background),
-                    Product("p 2", "150", imageRes = R.drawable.nate),
-                    Product("p 3", "200", imageRes = R.drawable.ic_product)
+                    Product("p 1","Nate Fucking Diaz!", "100", imageRes = R.drawable.ic_launcher_background),
+                    Product("p 2","No des", "150", imageRes = R.drawable.nate),
+                    Product("p 3","", "200", imageRes = R.drawable.ic_product)
                 )
 
                 // הוסף את המוצרים באמצעות ViewModel

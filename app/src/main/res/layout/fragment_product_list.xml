@@ -1,58 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="18dp"
     android:orientation="vertical"
-    android:gravity="center"
-    android:padding="16dp">
+    android:background="#FAFAFA"
+    android:padding="16dp"
+    tools:context=".ProductListFragment">
 
-        <!-- כותרת של המסך -->
+        <!-- כותרת -->
         <TextView
             android:id="@+id/title_product_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_gravity="center"
             android:text="@string/product_list"
-            android:textSize="24sp"
+            android:textSize="26sp"
             android:textStyle="bold"
-            android:layout_marginBottom="16dp" />
+            android:textColor="#3F51B5"
+            android:layout_marginBottom="16dp"/>
 
-        <!-- כפתור עבור מסך הוספה -->
+        <!-- כפתור הוספה -->
         <Button
             android:id="@+id/addButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/go_to_add" />
+            android:text="@string/go_to_add"
+            android:backgroundTint="#3F51B5"
+            android:textColor="#FFFFFF"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp"/>
 
-
-
-        <!-- מפריד קטן -->
+        <!-- קו מפריד -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#CCCCCC"
-            android:layout_marginVertical="16dp" />
+            android:layout_marginBottom="16dp"/>
 
-        <!-- רשימת מוצרים -->
-
-
+        <!-- RecyclerView לרשימת מוצרים -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvProductList"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:padding="8dp"
-            tools:ignore="SpeakableTextPresentCheck" />
+            android:clipToPadding="false"
+            tools:listitem="@layout/item_product"
+            android:importantForAccessibility="no" />
 
+        <!-- כפתור FloatingActionButton -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:contentDescription="Add"/>  <!-- ודא שיש לך אייקון כזה, אפשר גם להחליף -->
-
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_margin="16dp"
+            android:contentDescription="add_product"
+            app:srcCompat="@android:drawable/ic_input_add"
+            app:backgroundTint="#3F51B5" />
 
 </LinearLayout>

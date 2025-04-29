@@ -36,6 +36,7 @@ class ProductDetailFragment : Fragment() {
         product?.let {
             binding.tvProductName.text = it.name
             binding.tvProductPrice.text = it.price
+            binding.tvProductDescription.text = it.description
 
             if (!it.imageUri.isNullOrEmpty()) {
                 Glide.with(requireContext())
@@ -65,7 +66,6 @@ class ProductDetailFragment : Fragment() {
         dialog.setContentView(R.layout.dialog_fullscreen_image)
 
         val imageView = dialog.findViewById<ImageView>(R.id.fullscreenImageView)
-
         Glide.with(requireContext())
             .load(imageUrl)
             .into(imageView)
@@ -87,7 +87,7 @@ class ProductDetailFragment : Fragment() {
         product?.let {
             binding.tvProductName.text = it.name
             binding.tvProductPrice.text = it.price
-
+            binding.tvProductDescription.text = it.description ?: "אין תיאור"
             if (!it.imageUri.isNullOrEmpty()) {
                 Glide.with(requireContext())
                     .load(Uri.parse(it.imageUri))

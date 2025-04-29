@@ -14,6 +14,8 @@ import kotlinx.parcelize.Parcelize
 data class Product(
     @ColumnInfo("Name")
     val name: String,
+    @ColumnInfo("description")
+    val description: String,
     @ColumnInfo("Price")
     val price: String,
     @ColumnInfo(name = "ImageResId")

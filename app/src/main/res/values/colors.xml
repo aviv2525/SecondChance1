@@ -2,4 +2,13 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="productTitleColor">#FF6F00</color>
+    <color name="priceColor">#388E3C</color>
+    <color name="cardBackground">#FFFFFF</color>
+    <color name="backgroundLight">#F9F9F9</color>
+
+    <color name="cardPressedColor">#EEEEEE</color>
+    <color name="cardNormalColor">#FFFFFF</color>
+
 </resources>

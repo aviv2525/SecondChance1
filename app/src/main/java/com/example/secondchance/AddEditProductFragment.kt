@@ -99,6 +99,7 @@ class AddEditProductFragment : Fragment() {
 
             val result = Bundle().apply {
                 putString("name", binding.etProductName.text.toString())
+                putString("description", binding.etProductDescription.text.toString())
                 putString("price", priceWithShekel)
                 putString("imageUri", selectedImageUri?.toString()) // אפשר לשנות בהמשך
             }

@@ -1,13 +1,18 @@
 package com.example.secondchance
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.secondchance.databinding.ItemProductBinding
+import com.google.android.material.card.MaterialCardView
 
 class ProductAdapter(
     private val onItemClick: (Product) -> Unit,
@@ -31,8 +36,24 @@ class ProductAdapter(
         return ProductViewHolder(binding)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         holder.bind(getItem(position))
+        (holder.itemView as MaterialCardView).setOnTouchListener { view, motionEvent ->
+            when (motionEvent.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    val scaleUp = AnimationUtils.loadAnimation(view.context, R.anim.scale_up)
+                    view.startAnimation(scaleUp)
+                }
+
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    val scaleDown = AnimationUtils.loadAnimation(view.context, R.anim.scale_down)
+                    view.startAnimation(scaleDown)
+                }
+            }
+            false
+        }
+
     }
 
     inner class ProductViewHolder(private val binding: ItemProductBinding) :
