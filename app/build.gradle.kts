@@ -49,7 +49,6 @@ dependencies {
 */
 //    implementation(libs.androidx.lifecycle.viewmodel.ktx)
 //    implementation(libs.androidx.lifecycle.livedata.ktx)
-
     implementation(libs.room.runtime)
     kapt(libs.room.compiler)
     implementation(libs.glide)

@@ -1,6 +1,7 @@
 package com.example.secondchance
 
 import android.annotation.SuppressLint
+import android.content.res.Configuration
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -39,6 +40,7 @@ class ProductAdapter(
     @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         holder.bind(getItem(position))
+
         (holder.itemView as MaterialCardView).setOnTouchListener { view, motionEvent ->
             when (motionEvent.action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -54,6 +56,25 @@ class ProductAdapter(
             false
         }
 
+        val context = holder.itemView.context
+        val displayMetrics = context.resources.displayMetrics
+        val isLandscape = context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
+        val layoutParams = holder.itemView.layoutParams
+        if (isLandscape) {
+            val maxWidthPx = (displayMetrics.density * 300).toInt() // 500dp
+            layoutParams.width = maxWidthPx
+
+
+            if (layoutParams is ViewGroup.MarginLayoutParams) {
+                val horizontalMargin = ((displayMetrics.widthPixels - maxWidthPx) / 2)
+                layoutParams.marginStart = horizontalMargin
+                layoutParams.marginEnd = horizontalMargin
+            }
+        } else {
+            layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+        }
+        holder.itemView.layoutParams = layoutParams
     }
 
     inner class ProductViewHolder(private val binding: ItemProductBinding) :

@@ -1,5 +1,7 @@
+
 package com.example.secondchance
 
+import android.R
 import android.app.AlertDialog
 import android.graphics.Bitmap
 import android.net.Uri
@@ -7,11 +9,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.secondchance.databinding.FragmentAddEditProductBinding
 import java.io.File
@@ -20,7 +25,6 @@ class AddEditProductFragment : Fragment() {
 
     private var _binding: FragmentAddEditProductBinding? = null
     private val binding get() = _binding!!
-
 
     private val galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let {
@@ -31,7 +35,6 @@ class AddEditProductFragment : Fragment() {
     }
     private var selectedImageUri: Uri? = null
 
-
     private val cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
         bitmap?.let {
             val uri = saveBitmapAndGetUri(it)
@@ -41,6 +44,11 @@ class AddEditProductFragment : Fragment() {
 
         }
     }
+    private lateinit var sellerList: List<Seller>
+    private lateinit var selectedSeller: Seller
+
+
+
     private fun saveBitmapAndGetUri(bitmap: Bitmap): Uri? {
         val file = File(requireContext().cacheDir, "${System.currentTimeMillis()}.jpg")
         file.outputStream().use {
@@ -58,6 +66,29 @@ class AddEditProductFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentAddEditProductBinding.inflate(inflater, container, false)
+
+
+        val productViewModel = ViewModelProvider(requireActivity())[ProductViewModel::class.java]
+
+        productViewModel.sellerList.observe(viewLifecycleOwner) { sellers ->
+            sellerList = sellers
+
+            val sellerNames = sellers.map {
+                it.name
+            }
+            val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, sellerNames)
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+            binding.sellerSpinner.adapter = adapter
+
+            binding.sellerSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: android.widget.AdapterView<*>, view: View?, position: Int, id: Long) {
+                    selectedSeller = sellerList[position]
+                }
+
+                override fun onNothingSelected(parent: android.widget.AdapterView<*>) {}
+            }
+        }
 
 
         binding.backToListButton1.setOnClickListener {
@@ -97,15 +128,29 @@ class AddEditProductFragment : Fragment() {
 
             val priceWithShekel = "$price ₪"
 
-            val result = Bundle().apply {
-                putString("name", binding.etProductName.text.toString())
-                putString("description", binding.etProductDescription.text.toString())
-                putString("price", priceWithShekel)
-                putString("imageUri", selectedImageUri?.toString()) // אפשר לשנות בהמשך
+
+            val newProduct = Product(
+                name = name,
+                price = priceWithShekel,
+                description = description,
+                imageUri = selectedImageUri?.toString(),
+                sellerId = selectedSeller.sellerId // חובה: שיוך למוכר
+            )
+
+
+            val productViewModel = ViewModelProvider(requireActivity())[ProductViewModel::class.java]
+            //productViewModel.addProduct(newProduct)
+            productViewModel.addProductToSeller(selectedSeller.sellerId, newProduct)
+
+
+
+            if (!::selectedSeller.isInitialized) {
+                Toast.makeText(requireContext(), "יש לבחור מוכר", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
 
-            setFragmentResult("new_product_request", result)
-            findNavController().navigateUp()
+            //productViewModel.updateSellerList(updatedSellers)
+            //setFragmentResult("new_product_request", result)
 
 
             Toast.makeText(requireContext(), "המוצר נשמר בהצלחה", Toast.LENGTH_SHORT).show()
@@ -117,7 +162,10 @@ class AddEditProductFragment : Fragment() {
             binding.etProductDescription.text.clear()
             binding.Price.text.clear()
             binding.ivProductImage.setImageDrawable(null)
-            binding.ivProductImage.visibility = View.VISIBLE
+            binding.ivProductImage.visibility = View.GONE
+
+            findNavController().navigateUp()
+
         }
 
         return binding.root
@@ -127,4 +175,4 @@ class AddEditProductFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
-}
+    }

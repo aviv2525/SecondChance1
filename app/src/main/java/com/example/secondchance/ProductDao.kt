@@ -28,6 +28,4 @@ interface ProductDao {
     @Query("SELECT * FROM ProductsTable WHERE id LIKE :id ")
     fun getProduct(id:Int) : LiveData<Product?>
 
-//    @Query("SELECT * FROM product_table")
-//    fun getAllProducts(): List<Product>
 }

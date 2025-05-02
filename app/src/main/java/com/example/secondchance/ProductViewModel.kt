@@ -13,9 +13,14 @@ import kotlinx.coroutines.launch
 class ProductViewModel(application: Application) : AndroidViewModel(application) {
 
     private var repository = ProductRepository(application)
-
-
     val productList: LiveData<List<Product>> = repository.getProducts()
+
+    private val _sellerList = MutableLiveData<List<Seller>>()
+    val sellerList: LiveData<List<Seller>> = _sellerList
+
+    init {
+        loadDummySellers()
+    }
 
     fun addProduct(product: Product){
         viewModelScope.launch(Dispatchers.IO) {
@@ -33,6 +38,78 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
         for (product in products) {
             addProduct(product)
         }
+    }
+    private fun loadDummySellers() {
+        val dummySellers = listOf(
+            Seller(
+                sellerId = "1",
+                name = "בתשלום",
+                phone = "050-1234567",
+                address = "רחוב הדוגמה 10, תל אביב",
+                products = listOf(
+                    Product(
+                        name = "Natan Diaz",
+                        description = "אגדה אמיתית",
+                        price = "150 ₪",
+                        imageRes = R.drawable.nate,
+                        imageUri = null,
+                        sellerId = "1"
+                    ),
+                    Product(
+                        name = "No des",
+                        description = "חסר תיאור",
+                        price = "150 ₪",
+                        imageRes = R.drawable.nate,
+                        imageUri = null,
+                        sellerId = "1"
+                    )
+                )
+            ),
+            Seller(
+                sellerId = "2",
+                name = "מוצרים למסירה",
+                phone = "050-7654321",
+                address = "רחוב ההדגמה 20, ירושלים",
+                products = listOf(
+                    Product(
+                        name = "Diaz Jr",
+                        description = "ממשיך דרכו",
+                        price = "170 ₪",
+                        imageRes = R.drawable.nate,
+                        imageUri = null,
+                        sellerId = "2"
+                    ),
+                    Product(
+                        name = "Product 2",
+                        description = "עוד מוצר שווה",
+                        price = "190 ₪",
+                        imageRes = R.drawable.nate,
+                        imageUri = null,
+                        sellerId = "2"
+                    )
+                )
+            )
+        )
+
+        _sellerList.value = dummySellers
+    }
+
+    fun addProductToSeller(sellerId: String, product: Product) {
+        val currentList = _sellerList.value ?: return
+        val newList = currentList.map { seller ->
+            if (seller.sellerId == sellerId) {
+                val updatedProducts = seller.products + product
+                seller.copy(products = updatedProducts)
+            } else seller
+        }
+        _sellerList.value = newList
+
+        addProduct(product)
+    }
+
+
+    fun updateSellerList(newList: List<Seller>) {
+        _sellerList.value = newList
     }
 
 }

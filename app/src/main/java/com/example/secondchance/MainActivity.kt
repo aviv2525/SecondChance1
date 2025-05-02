@@ -13,15 +13,5 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        //val viewModel by viewModels<MyViewModel>()
-        //val viewModel : MainViewModel by viewModels()
-        //private lateinit var viewModel: ViewModel
-
-
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.mainActivity)) { v, insets ->
-//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-//            insets
-//        }
+       }
     }
-}

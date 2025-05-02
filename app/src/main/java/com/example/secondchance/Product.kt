@@ -19,9 +19,11 @@ data class Product(
     @ColumnInfo("Price")
     val price: String,
     @ColumnInfo(name = "ImageResId")
-    val imageRes: Int = R.drawable.ic_product, // דיפולט
+    val imageRes: Int = R.drawable.ic_product,
     @ColumnInfo(name = "ImageUri")
-    val imageUri: String? = null
+    val imageUri: String? = null,
+    val sellerId: String
+
 ) :Parcelable{
     @IgnoredOnParcel
     @PrimaryKey(autoGenerate = true)
@@ -29,27 +31,3 @@ data class Product(
 
 }
 
-
-
-/*@Database(entities = [Product::class], version = 1)
-abstract class AppDatabase : RoomDatabase() {
-    abstract fun productDao(): ProductDao
-
-
-
-
-
-
-    companion object {
-        private var INSTANCE: AppDatabase? = null
-
-        fun getDatabase(application: Application): AppDatabase {
-            if (INSTANCE == null) {
-                INSTANCE = Room.databaseBuilder(
-                    application.applicationContext,
-                    AppDatabase::class.java, "product_database"
-                ).build()
-            }
-            return INSTANCE!!
-        }
-    }*/
