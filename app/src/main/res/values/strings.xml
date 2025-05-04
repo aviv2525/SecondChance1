@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <resources>
     <string name="app_name">SecondChance</string>
     <!-- TODO: Remove or change this placeholder text -->
@@ -8,11 +10,32 @@
     <string name="go_to_settings">Go to Settings</string>
     <string name="product_list">Product List</string>
     <string name="add_edit_product">Add / Edit Product</string>
-    <string name="Pname">שם המוצר</string>
-    <string name="DP">תיאור המוצר</string>
-    <string name="price">מחיר</string>
-    <string name="Picture">בחר תמונה</string>
-    <string name="SaveProduct">שמור מוצר</string>
-    <string name="_99">₪99</string>
+    <string name="shekel" translatable="false">₪</string>
     <string name="product_details">Product Details</string>
+    <string name="save_product">save product</string>
+    <string name="select_image">select image</string>
+    <string name="back">back</string>
+    <string name="product_name">product name</string>
+    <string name="product_description">product description</string>
+    <string name="contact_seller">contact seller</string>
+    <string name="product_image">product_image</string>
+    <string name="please_enter_a_product_name">Please enter a product name</string>
+    <string name="please_enter_a_valid_price">Please enter a valid price</string>
+    <string name="please_select_a_seller">Please select a seller</string>
+    <string name="product_saved_successfully">Product saved successfully</string>
+    <string name="choose_from_gallery">Choose from Gallery</string>
+    <string name="take_a_photo">Take a Photo</string>
+    <string name="select_image_source">Select Image Source</string>
+    <string name="product">product</string>
+    <string name="are_you_sure_you_want_to_delete_this_product">Are you sure you want to delete this product?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="price">price</string>
+    <string name="name">name: %1$s</string>
+    <string name="mobile_phone">Mobile phone: %1$s</string>
+    <string name="address">Address: %1$s</string>
+    <string name="tel_aviv">tel_aviv</string>
+    <string name="call_to_seller">call_to_seller</string>
+    <string name="seller_name">seller_name</string>
+    <string name="seller_details">seller_details</string>
 </resources>

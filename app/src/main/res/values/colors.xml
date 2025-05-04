@@ -11,4 +11,13 @@
     <color name="cardPressedColor">#EEEEEE</color>
     <color name="cardNormalColor">#FFFFFF</color>
 
+    <color name="textColor">#000000</color>
+    <color name="hintColor">#888888</color>
+
+    <color name="primary">#3F51B5</color>
+    <color name="primaryDark">#303F9F</color>
+    <color name="accent">#FF4081</color>
+    <color name="background">#FAFAFA</color>
+    <color name="line">#DDDDDD</color>
+
 </resources>

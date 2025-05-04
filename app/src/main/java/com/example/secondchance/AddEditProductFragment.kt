@@ -96,9 +96,10 @@ class AddEditProductFragment : Fragment() {
         }
 
         binding.btnSelectImage.setOnClickListener {
-            val options = arrayOf("מהבחר גלריה", "צלם תמונה")
+            val options = arrayOf(getString(com.example.secondchance.R.string.choose_from_gallery),
+                getString(com.example.secondchance.R.string.take_a_photo))
             AlertDialog.Builder(requireContext())
-                .setTitle("בחר מקור תמונה")
+                .setTitle(getString(com.example.secondchance.R.string.select_image_source))
                 .setItems(options) { _, which ->
                     when (which) {
                         0 -> galleryLauncher.launch("image/*")
@@ -116,13 +117,15 @@ class AddEditProductFragment : Fragment() {
 
 
             if (name.isBlank()) {
-                binding.etProductName.error = "יש להזין שם מוצר"
+                binding.etProductName.error =
+                    getString(com.example.secondchance.R.string.please_enter_a_product_name)
                 return@setOnClickListener
             }
 
             val priceValue = price.toDoubleOrNull()
-            if (priceValue == null || priceValue <= 0) {
-                binding.Price.error = "יש להזין מחיר תקין"
+            if (priceValue == null || priceValue < 0) {
+                binding.Price.error =
+                    getString(com.example.secondchance.R.string.please_enter_a_valid_price)
                 return@setOnClickListener
             }
 
@@ -134,7 +137,7 @@ class AddEditProductFragment : Fragment() {
                 price = priceWithShekel,
                 description = description,
                 imageUri = selectedImageUri?.toString(),
-                sellerId = selectedSeller.sellerId // חובה: שיוך למוכר
+                sellerId = selectedSeller.sellerId
             )
 
 
@@ -145,7 +148,8 @@ class AddEditProductFragment : Fragment() {
 
 
             if (!::selectedSeller.isInitialized) {
-                Toast.makeText(requireContext(), "יש לבחור מוכר", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),
+                    getString(com.example.secondchance.R.string.please_select_a_seller), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -153,7 +157,8 @@ class AddEditProductFragment : Fragment() {
             //setFragmentResult("new_product_request", result)
 
 
-            Toast.makeText(requireContext(), "המוצר נשמר בהצלחה", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(),
+                getString(com.example.secondchance.R.string.product_saved_successfully), Toast.LENGTH_SHORT).show()
             //val product = Product(name = name, price = priceWithShekel, imageRes = R.drawable.ic_launcher_background)
             //ProductViewModel.addProduct(product)
 

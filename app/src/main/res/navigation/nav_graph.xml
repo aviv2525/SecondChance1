@@ -24,7 +24,12 @@
         <action
             android:id="@+id/action_productDetailFragment_to_productListFragment"
             app:destination="@id/productListFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left"
             app:popUpTo="@id/productListFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/productListFragment"
@@ -40,10 +45,23 @@
         <action
             android:id="@+id/action_productListFragment_to_productDetailFragment"
             app:destination="@id/productDetailFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
             app:popUpTo="@id/productListFragment" />
+
         <action
             android:id="@+id/action_productListFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/sellerDetailFragment"
+        android:name="com.example.secondchance.SellerDetailFragment"
+        android:label="Seller Details">
+        <argument
+            android:name="seller"
+            app:argType="com.example.secondchance.Seller" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"

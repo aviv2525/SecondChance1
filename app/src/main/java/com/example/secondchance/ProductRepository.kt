@@ -29,6 +29,17 @@ class ProductRepository (application: Application){
             productsDao.deleteProduct(product)
         }
     }
+    fun getProductsByName(): LiveData<List<Product>> {
+        return productsDao.getProduct()
+    }
+
+    fun getProductsByPriceAsc(): LiveData<List<Product>> {
+        return productsDao.getProductsByPriceAsc()
+    }
+
+    fun getProductsByPriceDesc(): LiveData<List<Product>> {
+        return productsDao.getProductsByPriceDesc()
+    }
 
     fun getProduct(id: Int): LiveData<Product?> = productsDao.getProduct(id)
 }

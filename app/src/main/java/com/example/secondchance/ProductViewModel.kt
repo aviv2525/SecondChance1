@@ -43,7 +43,7 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
         val dummySellers = listOf(
             Seller(
                 sellerId = "1",
-                name = "בתשלום",
+                name = "for sale product",
                 phone = "050-1234567",
                 address = "רחוב הדוגמה 10, תל אביב",
                 products = listOf(
@@ -57,7 +57,7 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
                     ),
                     Product(
                         name = "No des",
-                        description = "חסר תיאור",
+                        description = "description",
                         price = "150 ₪",
                         imageRes = R.drawable.nate,
                         imageUri = null,
@@ -67,7 +67,7 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
             ),
             Seller(
                 sellerId = "2",
-                name = "מוצרים למסירה",
+                name = "Second hand for free",
                 phone = "050-7654321",
                 address = "רחוב ההדגמה 20, ירושלים",
                 products = listOf(
@@ -106,8 +106,9 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
 
         addProduct(product)
     }
-
-
+    fun getSellerById(sellerId: String): Seller? {
+        return sellerList.value?.find { it.sellerId == sellerId }
+    }
     fun updateSellerList(newList: List<Seller>) {
         _sellerList.value = newList
     }

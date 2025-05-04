@@ -97,7 +97,7 @@ class ProductListFragment : Fragment((R.layout.fragment_product_list)) {
                         )
                     },
                     onProductLongClick = { product ->
-                        showDeleteDialog(product)
+                        showOptionsDialog(product)
                     }
                 )
 
@@ -217,19 +217,49 @@ class ProductListFragment : Fragment((R.layout.fragment_product_list)) {
 
     private fun showDeleteDialog(product: Product) {
         val builder = AlertDialog.Builder(requireContext())
-        builder.setMessage("Are you sure you want to delete this product?")
-            .setPositiveButton("Yes") { dialog, _ ->
+        builder.setMessage(getString(R.string.are_you_sure_you_want_to_delete_this_product))
+            .setPositiveButton(getString(R.string.yes)) { dialog, _ ->
                 productViewModel.deleteProduct(product)
                 dialog.dismiss()
             }
-            .setNegativeButton("No") { dialog, _ ->
+            .setNegativeButton(getString(R.string.no)) { dialog, _ ->
                 dialog.dismiss()
             }
             .create()
             .show()
     }
+    private fun showOptionsDialog(product: Product) {
+        val options = arrayOf("ערוך", "מחק")
 
-    override fun onDestroyView() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("בחר פעולה")
+            .setItems(options) { _, which ->
+                when (which) {
+                    0 -> {
+                        val bundle = Bundle().apply {
+                            putParcelable("product", product)
+                        }
+                        findNavController().navigate(
+                            R.id.action_productListFragment_to_addEditProductFragment,
+                            bundle
+                        )
+                    }
+                    1 -> {
+                        AlertDialog.Builder(requireContext())
+                            .setMessage("אתה בטוח שברצונך למחוק את המוצר?")
+                            .setPositiveButton("מחק") { dialog, _ ->
+                                productViewModel.deleteProduct(product)
+                                dialog.dismiss()
+                            }
+                            .setNegativeButton("ביטול") { dialog, _ ->
+                                dialog.dismiss()
+                            }
+                            .show()
+                    }
+                }
+            }
+            .show()
+    }    override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
