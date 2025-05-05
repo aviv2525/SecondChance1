@@ -56,30 +56,10 @@ class ProductListFragment : Fragment((R.layout.fragment_product_list)) {
         setupRecyclerView()
         observeProducts()
         addDefaultProductsIfNeeded()
-        //setupSellerRecyclerView() // חדש!
-
-        //setupListeners()
-
-        /*        productViewModel.sellerList.observe(viewLifecycleOwner) { sellers ->
-                    sellerAdapter = SellerAdapter(sellers,
-                        onProductClick = { product ->
-                        val bundle = Bundle().apply {
-                            putParcelable("product", product)
-                        }
-                        findNavController().navigate(R.id.action_productListFragment_to_productDetailFragment, bundle)
-                    },
-                        onProductLongClick = { product ->
-                            // כאן תגדיר את פעולת ה-longClick (למשל מחיקה)
-                            showDeleteDialog(product)
-                        }
-                    )
-                    binding.rvSellers.adapter = sellerAdapter
-                }*/
 
         productViewModel.productList.observe(viewLifecycleOwner) { products ->
             productViewModel.sellerList.observe(viewLifecycleOwner) { sellers ->
 
-                // בנה רשימת מוכרים חדשה עם המוצרים בפועל מתוך ה-DB
                 val updatedSellers = sellers.map { seller ->
                     val sellerProducts = products.filter { it.sellerId == seller.sellerId }
                     seller.copy(products = sellerProducts)
@@ -107,8 +87,11 @@ class ProductListFragment : Fragment((R.layout.fragment_product_list)) {
 
 
         binding.addButton.setOnClickListener {
-            findNavController().navigate(R.id.action_productListFragment_to_addEditProductFragment)
+            val action = ProductListFragmentDirections
+                .actionProductListFragmentToAddEditProductFragment(null)
+            findNavController().navigate(action)
         }
+
 
 
     }
@@ -229,29 +212,26 @@ class ProductListFragment : Fragment((R.layout.fragment_product_list)) {
             .show()
     }
     private fun showOptionsDialog(product: Product) {
-        val options = arrayOf("ערוך", "מחק")
+        val options = arrayOf("Edit", "Delete")
 
         AlertDialog.Builder(requireContext())
-            .setTitle("בחר פעולה")
+            .setTitle("Please Select")
             .setItems(options) { _, which ->
                 when (which) {
                     0 -> {
-                        val bundle = Bundle().apply {
-                            putParcelable("product", product)
-                        }
-                        findNavController().navigate(
-                            R.id.action_productListFragment_to_addEditProductFragment,
-                            bundle
-                        )
+                        val action = ProductListFragmentDirections
+                            .actionProductListFragmentToAddEditProductFragment(product)
+                        findNavController().navigate(action)
+
                     }
                     1 -> {
                         AlertDialog.Builder(requireContext())
-                            .setMessage("אתה בטוח שברצונך למחוק את המוצר?")
-                            .setPositiveButton("מחק") { dialog, _ ->
+                            .setMessage("Are you sure you want to delete?")
+                            .setPositiveButton("Delete") { dialog, _ ->
                                 productViewModel.deleteProduct(product)
                                 dialog.dismiss()
                             }
-                            .setNegativeButton("ביטול") { dialog, _ ->
+                            .setNegativeButton("Cancel") { dialog, _ ->
                                 dialog.dismiss()
                             }
                             .show()

@@ -24,7 +24,6 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "product database"
                 )
-                    .fallbackToDestructiveMigration() // ✅ מוחק ומבנה מחדש
                     .allowMainThreadQueries()
                     .build()
                 INSTANCE = instance

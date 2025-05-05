@@ -14,24 +14,24 @@ interface ProductDao {
     @Insert
     fun insertProduct(products: List<Product>)
 
-
-    @Insert(onConflict =  OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addProduct(product: Product)
-    @Delete
-    fun deleteProduct(vararg  product: Product)
+
     @Update
-    fun updateProduct(product: Product)
+    suspend fun updateProduct(product: Product)
 
-    @Query("SELECT * FROM ProductsTable ORDER BY `Name` ASC")
-    fun getProduct() : LiveData<List<Product>>
+    @Delete
+    fun deleteProduct(vararg product: Product)
 
-    @Query("SELECT * FROM ProductsTable ORDER BY `price` ASC")
+    @Query("SELECT * FROM ProductsTable ORDER BY Name ASC")
+    fun getProduct(): LiveData<List<Product>>
+
+    @Query("SELECT * FROM ProductsTable ORDER BY Price ASC")
     fun getProductsByPriceAsc(): LiveData<List<Product>>
 
-    @Query("SELECT * FROM ProductsTable ORDER BY `price` DESC")
+    @Query("SELECT * FROM ProductsTable ORDER BY Price DESC")
     fun getProductsByPriceDesc(): LiveData<List<Product>>
 
-    @Query("SELECT * FROM ProductsTable WHERE id LIKE :id ")
-    fun getProduct(id:Int) : LiveData<Product?>
-
+    @Query("SELECT * FROM ProductsTable WHERE id = :id")
+    fun getProductById(id: Int): LiveData<Product?>
 }

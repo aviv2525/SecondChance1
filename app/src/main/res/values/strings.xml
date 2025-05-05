@@ -18,7 +18,7 @@
     <string name="product_name">product name</string>
     <string name="product_description">product description</string>
     <string name="contact_seller">contact seller</string>
-    <string name="product_image">product_image</string>
+    <string name="product_image">product image</string>
     <string name="please_enter_a_product_name">Please enter a product name</string>
     <string name="please_enter_a_valid_price">Please enter a valid price</string>
     <string name="please_select_a_seller">Please select a seller</string>
@@ -35,7 +35,10 @@
     <string name="mobile_phone">Mobile phone: %1$s</string>
     <string name="address">Address: %1$s</string>
     <string name="tel_aviv">tel_aviv</string>
-    <string name="call_to_seller">call_to_seller</string>
-    <string name="seller_name">seller_name</string>
-    <string name="seller_details">seller_details</string>
+    <string name="call_to_seller">call to seller</string>
+    <string name="seller_name">seller name</string>
+    <string name="seller_details">seller details</string>
+    <string name="name_seller">name %1$s</string>
+    <string name="mobile_phone_seller">Mobile Phone: %1$s</string>
+    <string name="address_seller">Address: %1$s</string>
 </resources>

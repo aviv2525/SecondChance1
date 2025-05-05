@@ -12,6 +12,8 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 @Entity(tableName = "ProductsTable")
 data class Product(
+    @PrimaryKey(autoGenerate = true)
+    var id : Int = 0,
     @ColumnInfo("Name")
     val name: String,
     @ColumnInfo("description")
@@ -25,9 +27,7 @@ data class Product(
     val sellerId: String
 
 ) :Parcelable{
-    @IgnoredOnParcel
-    @PrimaryKey(autoGenerate = true)
-    var id : Int = 0
+
 
 }
 

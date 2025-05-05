@@ -126,7 +126,7 @@ class ProductDetailFragment : Fragment() {
                     putParcelable("seller", seller)
                 }
 
-                findNavController().navigate(R.id.sellerDetailFragment, bundle)
+                findNavController().navigate(R.id.action_productDetailFragment_to_sellerDetailFragment, bundle)
             }
 
         binding.btnBack.setOnClickListener {

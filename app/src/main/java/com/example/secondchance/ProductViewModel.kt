@@ -22,7 +22,7 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
         loadDummySellers()
     }
 
-    fun addProduct(product: Product){
+    private fun addProduct(product: Product){
         viewModelScope.launch(Dispatchers.IO) {
             repository.addProduct(product)
         }
@@ -109,6 +109,28 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
     fun getSellerById(sellerId: String): Seller? {
         return sellerList.value?.find { it.sellerId == sellerId }
     }
+//    fun updateProduct(newProduct: Product) {
+//        val currentList = _sellerList.value ?: return
+//
+//        val updatedList = currentList.map { seller ->
+//            if (seller.sellerId == newProduct.sellerId) {
+//                val updatedProducts = seller.products.map { product ->
+//                    if (product.id == newProduct.id) newProduct else product
+//                }
+//                seller.copy(products = updatedProducts)
+//            } else seller
+//        }
+//
+//        _sellerList.value = updatedList
+//    }
+
+    fun updateProduct(product: Product) {
+        viewModelScope.launch {
+            repository.updateProduct(product)
+        }
+    }
+
+
     fun updateSellerList(newList: List<Seller>) {
         _sellerList.value = newList
     }

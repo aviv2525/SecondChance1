@@ -55,26 +55,29 @@ class ProductAdapter(
             }
             false
         }
-
         val context = holder.itemView.context
-        val displayMetrics = context.resources.displayMetrics
-        val isLandscape = context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
-
         val layoutParams = holder.itemView.layoutParams
-        if (isLandscape) {
-            val maxWidthPx = (displayMetrics.density * 300).toInt() // 500dp
-            layoutParams.width = maxWidthPx
+        val orientation = context.resources.configuration.orientation
+        val displayMetrics = context.resources.displayMetrics
+        val density = displayMetrics.density
 
+        if (layoutParams is ViewGroup.MarginLayoutParams) {
+            val spacingPx = (8 * density).toInt()
 
-            if (layoutParams is ViewGroup.MarginLayoutParams) {
-                val horizontalMargin = ((displayMetrics.widthPixels - maxWidthPx) / 2)
-                layoutParams.marginStart = horizontalMargin
-                layoutParams.marginEnd = horizontalMargin
+            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                val maxWidthPx = (300 * density).toInt()
+                layoutParams.width = maxWidthPx
+
+                val screenWidth = displayMetrics.widthPixels
+                val sideMargin = ((screenWidth - maxWidthPx) / 2).coerceAtMost((16 * density).toInt())
+                layoutParams.setMargins(sideMargin, spacingPx, sideMargin, spacingPx)
+            } else {
+                layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+                layoutParams.setMargins(spacingPx, spacingPx, spacingPx, spacingPx)
             }
-        } else {
-            layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+
+            holder.itemView.layoutParams = layoutParams
         }
-        holder.itemView.layoutParams = layoutParams
     }
 
     inner class ProductViewHolder(private val binding: ItemProductBinding) :

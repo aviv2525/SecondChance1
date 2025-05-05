@@ -7,12 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.secondchance.databinding.FragmentSellerDetailBinding
 
 class SellerDetailFragment : Fragment() {
 
     private var _binding: FragmentSellerDetailBinding? = null
     private val binding get() = _binding!!
+
+    val product = arguments?.getParcelable<Product>("product")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,9 +26,9 @@ class SellerDetailFragment : Fragment() {
         val seller = arguments?.getParcelable<Seller>("seller")
 
         seller?.let {
-            binding.tvSellerName.text = "שם: ${it.name}"
-            binding.tvSellerPhone.text = "טלפון: ${it.phone}"
-            binding.tvSellerAddress.text = "כתובת: ${it.address}"
+            binding.tvSellerName.text = getString(R.string.name_seller, it.name)
+            binding.tvSellerPhone.text = getString(R.string.mobile_phone_seller, it.phone)
+            binding.tvSellerAddress.text = getString(R.string.address_seller, it.address)
 
             binding.btnCall.setOnClickListener {
                 val intent = Intent(Intent.ACTION_DIAL).apply {
@@ -35,6 +38,15 @@ class SellerDetailFragment : Fragment() {
             }
         }
 
-        return binding.root
+
+        binding.backToListButton2.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
+
+            return binding.root
+
     }
+
+
 }
