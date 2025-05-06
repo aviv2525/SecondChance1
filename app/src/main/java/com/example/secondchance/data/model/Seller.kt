@@ -1,4 +1,4 @@
-package com.example.secondchance
+package com.example.secondchance.data.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

@@ -1,4 +1,4 @@
-package com.example.secondchance
+package com.example.secondchance.ui.addeditproduct
 
 import android.app.AlertDialog
 import android.graphics.Bitmap
@@ -16,6 +16,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import viewmodel.ProductViewModel
+import com.example.secondchance.R
+import com.example.secondchance.data.model.Product
+import com.example.secondchance.data.model.Seller
 import com.example.secondchance.databinding.FragmentAddEditProductBinding
 import java.io.File
 

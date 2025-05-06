@@ -1,12 +1,14 @@
-package com.example.secondchance
+package viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CoroutineScope
+import com.example.secondchance.R
+import com.example.secondchance.data.model.Product
+import com.example.secondchance.data.model.Seller
+import com.example.secondchance.data.repository.ProductRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -39,27 +41,35 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
             addProduct(product)
         }
     }
+   /*
+   הערות לערן !
+    כאן יש את רשימת המוכרים שסידרנו שתהיה להגשה
+     כרגע 2 רק 2 מוכרים וניתן להעביר מוצרים בינהם
+    בפועל צריך להיות כפתור להוסיף מוכרים ואת זה שמרנו להמשך :)
+
+    */
+
     private fun loadDummySellers() {
         val dummySellers = listOf(
             Seller(
                 sellerId = "1",
-                name = "for sale product",
+                name = "Seller 1",
                 phone = "050-1234567",
-                address = "רחוב הדוגמה 10, תל אביב",
+                address = "10 Example Street, Tel Aviv",
                 products = listOf(
                     Product(
-                        name = "Natan Diaz",
-                        description = "אגדה אמיתית",
-                        price = "150 ₪",
-                        imageRes = R.drawable.nate,
+                        name = "Bluetooth Speaker",
+                        description = "Portable, used a few times, works perfectly.",
+                        price = "90 ₪",
+                        imageRes = R.drawable.ic_launcher_foreground,
                         imageUri = null,
                         sellerId = "1"
                     ),
                     Product(
-                        name = "No des",
-                        description = "description",
-                        price = "150 ₪",
-                        imageRes = R.drawable.nate,
+                        name = "Laptop Stand",
+                        description = "Adjustable aluminum stand for laptops.",
+                        price = "60 ₪",
+                        imageRes = R.drawable.ic_launcher_foreground,
                         imageUri = null,
                         sellerId = "1"
                     )
@@ -67,23 +77,23 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
             ),
             Seller(
                 sellerId = "2",
-                name = "Second hand for free",
+                name = "Seller 2",
                 phone = "050-7654321",
-                address = "רחוב ההדגמה 20, ירושלים",
+                address = "20 Demo Avenue, Jerusalem",
                 products = listOf(
                     Product(
-                        name = "Diaz Jr",
-                        description = "ממשיך דרכו",
-                        price = "170 ₪",
-                        imageRes = R.drawable.nate,
+                        name = "Desk Lamp",
+                        description = "LED lamp with 3 brightness modes.",
+                        price = "50 ₪",
+                        imageRes = R.drawable.ic_launcher_foreground,
                         imageUri = null,
                         sellerId = "2"
                     ),
                     Product(
-                        name = "Product 2",
-                        description = "עוד מוצר שווה",
-                        price = "190 ₪",
-                        imageRes = R.drawable.nate,
+                        name = "Wall Clock",
+                        description = "Minimalist design, works great.",
+                        price = "40 ₪",
+                        imageRes = R.drawable.ic_launcher_foreground,
                         imageUri = null,
                         sellerId = "2"
                     )
@@ -109,20 +119,6 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
     fun getSellerById(sellerId: String): Seller? {
         return sellerList.value?.find { it.sellerId == sellerId }
     }
-//    fun updateProduct(newProduct: Product) {
-//        val currentList = _sellerList.value ?: return
-//
-//        val updatedList = currentList.map { seller ->
-//            if (seller.sellerId == newProduct.sellerId) {
-//                val updatedProducts = seller.products.map { product ->
-//                    if (product.id == newProduct.id) newProduct else product
-//                }
-//                seller.copy(products = updatedProducts)
-//            } else seller
-//        }
-//
-//        _sellerList.value = updatedList
-//    }
 
     fun updateProduct(product: Product) {
         viewModelScope.launch {
@@ -130,9 +126,5 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-
-    fun updateSellerList(newList: List<Seller>) {
-        _sellerList.value = newList
-    }
 
 }

@@ -1,24 +1,22 @@
-package com.example.secondchance
+package com.example.secondchance.ui.productlist
+
 import android.util.Log
 
 import android.app.AlertDialog
-import android.media.Image
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.core.graphics.drawable.toDrawable
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.example.secondchance.databinding.FragmentProductDetailBinding
+import viewmodel.ProductViewModel
+import com.example.secondchance.R
+import com.example.secondchance.adapter.SellerAdapter
+import com.example.secondchance.data.model.Product
 import com.example.secondchance.databinding.FragmentProductListBinding
-import com.example.secondchance.ProductAdapter as ProductAdapter
+import com.example.secondchance.adapter.ProductAdapter as ProductAdapter
 
 
 class ProductListFragment : Fragment((R.layout.fragment_product_list)) {
@@ -30,10 +28,6 @@ class ProductListFragment : Fragment((R.layout.fragment_product_list)) {
     private lateinit var productAdapter: ProductAdapter
     private lateinit var sellerAdapter: SellerAdapter
 
-    private lateinit var recyclerView: RecyclerView
-
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +35,6 @@ class ProductListFragment : Fragment((R.layout.fragment_product_list)) {
     ): View {
         _binding = FragmentProductListBinding.inflate(inflater, container, false)
 
-        // כאן נקבל את ה-ViewModel
         productViewModel = ViewModelProvider(this)[ProductViewModel::class.java]
 
         return binding.root
@@ -50,7 +43,6 @@ class ProductListFragment : Fragment((R.layout.fragment_product_list)) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val product = arguments?.getParcelable<Product>("product")
 
 
         setupRecyclerView()
@@ -80,22 +72,16 @@ class ProductListFragment : Fragment((R.layout.fragment_product_list)) {
                         showOptionsDialog(product)
                     }
                 )
-
                 binding.rvSellers.adapter = sellerAdapter
             }
         }
-
 
         binding.addButton.setOnClickListener {
             val action = ProductListFragmentDirections
                 .actionProductListFragmentToAddEditProductFragment(null)
             findNavController().navigate(action)
         }
-
-
-
     }
-
 
     private fun addDefaultProductsIfNeeded() {
         productViewModel.productList.observe(viewLifecycleOwner) { products ->
@@ -104,26 +90,26 @@ class ProductListFragment : Fragment((R.layout.fragment_product_list)) {
                     if (sellers.isNotEmpty()) {
                         val defaultProducts = listOf(
                             Product(
-                                name = "Nate Fucking Diaz!",
-                                price = "100 ₪",
-                                description = "אגדה ב-UFC",
-                                imageRes = R.drawable.ic_launcher_background,
-                                imageUri = null,
-                                sellerId = sellers[0].sellerId // 👈 שיוך למוכר
-                            ),
-                            Product(
-                                name = "No des",
-                                price = "150 ₪",
-                                description = "סתם מוצר מגניב",
-                                imageRes = R.drawable.nate,
+                                name = "Used Nespresso Machine",
+                                price = "220 ₪",
+                                description = "In great condition. Selling due to upgrade.",
+                                imageRes = R.drawable.nespresso,
                                 imageUri = null,
                                 sellerId = sellers[0].sellerId
                             ),
                             Product(
-                                name = "Product 3",
-                                price = "200 ₪",
-                                description = "עוד מוצר",
-                                imageRes = R.drawable.ic_product,
+                                name = "Dyson Cordless Vacuum",
+                                price = "450 ₪",
+                                description = "Works perfectly. Strong battery.",
+                                imageRes = R.drawable.dyson,
+                                imageUri = null,
+                                sellerId = sellers[0].sellerId
+                            ),
+                            Product(
+                                name = "Ergonomic Office Chair",
+                                price = "180 ₪",
+                                description = "Very comfortable. Selling due to space issues.",
+                                imageRes = R.drawable.chair,
                                 imageUri = null,
                                 sellerId = sellers[0].sellerId
                             )
@@ -135,7 +121,6 @@ class ProductListFragment : Fragment((R.layout.fragment_product_list)) {
             }
         }
     }
-
 
 
     private fun setupRecyclerView() {
@@ -155,26 +140,6 @@ class ProductListFragment : Fragment((R.layout.fragment_product_list)) {
             adapter = productAdapter
 
 
-        }
-    }
-
-    private fun setupSellerRecyclerView() {
-        sellerAdapter = SellerAdapter(
-            sellers = emptyList(),
-            onProductClick = { product ->
-                val bundle = Bundle().apply {
-                    putParcelable("product", product)
-                }
-                findNavController().navigate(R.id.action_productListFragment_to_productDetailFragment, bundle)
-            },
-            onProductLongClick = { product ->
-                showDeleteDialog(product)
-            }
-        )
-
-        binding.rvSellers.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = sellerAdapter
         }
     }
 

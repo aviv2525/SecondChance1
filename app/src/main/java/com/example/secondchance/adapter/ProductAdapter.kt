@@ -1,4 +1,4 @@
-package com.example.secondchance
+package com.example.secondchance.adapter
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
@@ -7,13 +7,15 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.secondchance.R
+import com.example.secondchance.data.model.Product
 import com.example.secondchance.databinding.ItemProductBinding
 import com.google.android.material.card.MaterialCardView
+import androidx.core.net.toUri
 
 class ProductAdapter(
     private val onItemClick: (Product) -> Unit,
@@ -89,7 +91,7 @@ class ProductAdapter(
 
             if (!product.imageUri.isNullOrEmpty()) {
                 Glide.with(binding.root.context)
-                    .load(Uri.parse(product.imageUri))
+                    .load(product.imageUri.toUri())
                     .override(200, 200)
                     .centerCrop()
                     .into(binding.ivProductImage)

@@ -1,12 +1,11 @@
-package com.example.secondchance
+package com.example.secondchance.data.model
 
-import android.net.Uri
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.secondchance.R
 
-import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -21,13 +20,13 @@ data class Product(
     @ColumnInfo("Price")
     val price: String,
     @ColumnInfo(name = "ImageResId")
-    val imageRes: Int = R.drawable.ic_product,
+    val imageRes: Int = R.drawable.second_chance_def,
     @ColumnInfo(name = "ImageUri")
     val imageUri: String? = null,
     val sellerId: String
 
-) :Parcelable{
+) :Parcelable
 
 
-}
+
 

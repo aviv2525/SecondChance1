@@ -8,7 +8,7 @@
     <string name="go_to_add">Go to Add</string>
     <string name="go_to_detail">Go to Detail</string>
     <string name="go_to_settings">Go to Settings</string>
-    <string name="product_list">Product List</string>
+    <string name="second_Chance" translatable="false">Second Chance</string>
     <string name="add_edit_product">Add / Edit Product</string>
     <string name="shekel" translatable="false">₪</string>
     <string name="product_details">Product Details</string>
@@ -34,11 +34,22 @@
     <string name="name">name: %1$s</string>
     <string name="mobile_phone">Mobile phone: %1$s</string>
     <string name="address">Address: %1$s</string>
-    <string name="tel_aviv">tel_aviv</string>
+    <string name="tel_aviv">tel aviv</string>
     <string name="call_to_seller">call to seller</string>
     <string name="seller_name">seller name</string>
     <string name="seller_details">seller details</string>
-    <string name="name_seller">name %1$s</string>
     <string name="mobile_phone_seller">Mobile Phone: %1$s</string>
     <string name="address_seller">Address: %1$s</string>
+    <string name="app_logo">app_logo</string>
+    <string name="seller_number">Mobile Phone: %1$s</string>
+    <string name="no_seller_details_found">No seller details found.</string>
+    <string name="no_description">No description</string>
+    <string name="seller_addres">seller addres</string>
+    <string name="mobile_phone_seller1">Mobile phone</string>
+    <string name="name_seller1">Name</string>
+    <string name="name_seller">name</string>
+    <string name="b_name">Name: %1$s</string>
+    <string name="b_phone">Phone: %1$s</string>
+    <string name="b_address">Address: %1$s</string>
+    <string name="phone">Phone</string>
 </resources>

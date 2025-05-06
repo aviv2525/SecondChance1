@@ -1,4 +1,4 @@
-package com.example.secondchance
+package com.example.secondchance.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,6 +6,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.secondchance.R
+import com.example.secondchance.data.model.Product
+import com.example.secondchance.data.model.Seller
 
 class SellerAdapter(
     private val sellers: List<Seller>,

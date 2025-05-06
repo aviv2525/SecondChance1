@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAFAFA"
+    android:background="@color/backgroundLight"
     android:padding="16dp">
 
     <LinearLayout
@@ -12,17 +12,15 @@
         android:layout_marginTop="18dp"
         android:gravity="center_horizontal">
 
-        <!-- Back Button -->
         <Button
             android:id="@+id/backToListButton1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/back"
-            android:backgroundTint="#E0E0E0"
-            android:textColor="#000000"
+            android:backgroundTint="@color/greenLight"
+            android:textColor="@color/greenPrimary"
             android:layout_gravity="start"/>
 
-        <!-- Title -->
         <TextView
             android:id="@+id/title_add_edit"
             android:layout_width="wrap_content"
@@ -30,7 +28,7 @@
             android:text="@string/add_edit_product"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:textColor="#3F51B5"
+            android:textColor="@color/greenPrimary"
             android:layout_marginTop="24dp" />
 
         <Spinner
@@ -39,7 +37,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"/>
 
-        <!-- Product Name -->
         <EditText
             android:id="@+id/etProductName"
             android:layout_width="match_parent"
@@ -49,7 +46,6 @@
             android:layout_marginTop="16dp"
             android:backgroundTint="#3F51B5"/>
 
-        <!-- Product Description -->
         <EditText
             android:id="@+id/etProductDescription"
             android:layout_width="match_parent"
@@ -60,7 +56,6 @@
             android:layout_marginTop="16dp"
             android:backgroundTint="#3F51B5"/>
 
-        <!-- Price -->
         <EditText
             android:id="@+id/Price"
             android:layout_width="match_parent"
@@ -71,17 +66,15 @@
             android:layout_marginTop="16dp"
             android:backgroundTint="#3F51B5"/>
 
-        <!-- Image Selection -->
         <Button
             android:id="@+id/btnSelectImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/select_image"
             android:layout_marginTop="24dp"
-            android:backgroundTint="#3F51B5"
-            android:textColor="#FFFFFF" />
+            android:backgroundTint="@color/greenPrimary"
+            android:textColor="@color/white" />
 
-        <!-- Selected Image -->
         <ImageView
             android:id="@+id/ivProductImage"
             android:layout_width="match_parent"
@@ -91,15 +84,14 @@
             android:visibility="gone"
             android:background="#BDBDBD" />
 
-        <!-- Save Button -->
         <Button
             android:id="@+id/btnSaveProduct"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/save_product"
             android:layout_marginTop="24dp"
-            android:backgroundTint="#3F51B5"
-            android:textColor="#FFFFFF" />
+            android:backgroundTint="@color/greenPrimary"
+            android:textColor="@color/white" />
 
     </LinearLayout>
 </ScrollView>

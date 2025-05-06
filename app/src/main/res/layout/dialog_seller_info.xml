@@ -9,17 +9,17 @@
         android:id="@+id/tvSellerName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="שם המוכר" />
+        android:text="@string/seller_name" />
 
     <TextView
         android:id="@+id/tvSellerPhone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="טלפון" />
+        android:text="@string/phone" />
 
     <TextView
         android:id="@+id/tvSellerAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="כתובת" />
+        android:text="@string/address" />
 </LinearLayout>
